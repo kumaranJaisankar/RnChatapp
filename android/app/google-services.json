@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "96081251265",
+    "project_id": "rnchatapp-4490a",
+    "storage_bucket": "rnchatapp-4490a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96081251265:android:9eafd347b283868aa9fd40",
+        "android_client_info": {
+          "package_name": "com.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96081251265-0cdtm4kcjjesbnd4rcm4f2je5avuflde.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK6URRNogIoQtuyc-wCsIK75g4lQP0Qeo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96081251265-0cdtm4kcjjesbnd4rcm4f2je5avuflde.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
