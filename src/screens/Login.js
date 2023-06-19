@@ -31,9 +31,15 @@ const Login = ({navigation}) => {
       .then(snapShot => {
         setLoading(false);
         if (snapShot.docs !== []) {
-          console.log(JSON.stringify(snapShot.docs[0].data()));
           const dataObject = snapShot.docs[0].data();
-          goToHomePage(dataObject.name, dataObject.email, dataObject.userId);
+
+          goToHomePage(
+            dataObject.name,
+            dataObject.email,
+            dataObject.userId,
+            dataObject.avatar,
+            dataObject.phNumber,
+          );
         } else {
           Alert.alert('error', 'user not avaliable, plz create your accout');
         }
@@ -43,12 +49,11 @@ const Login = ({navigation}) => {
         Alert.alert('Warning', 'Wrong email or password');
       });
   };
-  const goToHomePage = async (name, email, userId) => {
-    console.log(name, email, userId);
-    const userObj = {name, email, userId};
+  const goToHomePage = async (name, email, userId, avatar, phNumber) => {
+    const userObj = {name, email, userId, avatar, phNumber};
     try {
       await AsyncStorage.setItem('userDetail', JSON.stringify(userObj));
-      navigation.navigate('mainScreen');
+      navigation.push('mainScreen');
     } catch (error) {
       Alert.alert(error);
     }
@@ -58,7 +63,7 @@ const Login = ({navigation}) => {
       try {
         const response = await AsyncStorage.getItem('userDetail');
         if (response !== null) {
-          navigation.navigate('mainScreen');
+          navigation.navigate('chatPage');
         }
       } catch (error) {
         Alert.alert(error, 'Try Again');

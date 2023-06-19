@@ -26,7 +26,7 @@ const MainScreen = ({navigation}) => {
     const fetchDetails = async () => {
       try {
         const response = await AsyncStorage.getItem('userDetail');
-        console.log(response, 'ndjkbfbf');
+
         if (response === null) {
           navigation.navigate('login');
         } else {
@@ -49,7 +49,6 @@ const MainScreen = ({navigation}) => {
       initialRouteName="chatPage"
       screenOptions={({route}) => ({
         tabBarIcon: props => {
-          console.log(route);
           switch (route.name) {
             case 'chatPage':
               return (

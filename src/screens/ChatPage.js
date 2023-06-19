@@ -12,20 +12,30 @@ import {
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../components/Loader';
+import {useIsFocused, useFocusEffect} from '@react-navigation/native';
 let id = '';
-const ChatPage = ({navigation}) => {
+let avatar = '';
+const ChatPage = ({navigation, route}) => {
+  const isFocused = useIsFocused();
+
   const [allUsers, setAllUsers] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [render, setRender] = useState(true);
+
   useEffect(() => {
     getUsers();
+    return () => console.log('cleanup');
   }, []);
 
   const getUsers = async () => {
     try {
+      setLoading(true);
       const fromAsyncStore = await AsyncStorage.getItem('userDetail');
 
       const userDetail = JSON.parse(fromAsyncStore);
       id = userDetail.userId;
-      console.log(userDetail.email);
+      avatar = userDetail.avatar;
       firestore()
         .collection('Users')
         .where('email', '!=', userDetail.email)
@@ -35,8 +45,9 @@ const ChatPage = ({navigation}) => {
             setAllUsers(res.docs);
           }
         });
+      setLoading(false);
     } catch (error) {
-      console.log(error);
+      Alert.alert(error);
     }
   };
 
@@ -46,17 +57,32 @@ const ChatPage = ({navigation}) => {
         keyExtractor={(_, index) => index.toString()}
         data={allUsers}
         renderItem={({item, index}) => {
-          console.log(item, 'this is item');
+          const userAvatar = item.data().avatar;
+          const itemSerilize = {...item.data()};
+
           return (
             <TouchableOpacity
               activeOpacity={0.9}
               style={styles.userContainer}
-              onPress={() => navigation.navigate('chat', {data: item, id: id})}>
+              onPress={() =>
+                navigation.navigate('chat', {
+                  data: itemSerilize,
+                  id: id,
+                  avatar: avatar,
+                })
+              }>
               <View>
-                <Image
-                  style={{width: 40, height: 40}}
-                  source={require('../images/user.png')}
-                />
+                {userAvatar === null ? (
+                  <Image
+                    style={{width: 40, height: 40}}
+                    source={require('../images/user.png')}
+                  />
+                ) : (
+                  <Image
+                    style={{width: 40, height: 40, borderRadius: 20}}
+                    source={{uri: userAvatar}}
+                  />
+                )}
                 <View style={styles.activeProfile}></View>
               </View>
               <View>
@@ -72,6 +98,7 @@ const ChatPage = ({navigation}) => {
           );
         }}
       />
+      <Loader isLoading={isLoading} />
     </View>
   );
 };

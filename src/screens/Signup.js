@@ -59,6 +59,7 @@ const Signup = ({navigation}) => {
         phNumber: phNumer,
         password: password,
         userId: userId,
+        avatar: null,
       })
       .then(val => {
         setLoading(false);

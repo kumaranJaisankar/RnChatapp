@@ -8,6 +8,7 @@ import Signup from '../screens/Signup';
 import MainScreen from './MainScreenNavigator';
 import Chat from '../screens/Chat';
 import AppColors from '../colors/AppColors';
+import UploadImage from '../components/UploadImage';
 
 const Stack = createStackNavigator();
 
@@ -39,8 +40,8 @@ export default function AppNavigator() {
           name="chat"
           component={Chat}
           options={({route}) => {
-            console.log(route, 'this is from navigation');
-            const userName = route.params.data.data().name;
+            const userName = route.params.data.name;
+            const userAvatar = route.params.data.avatar;
             return {
               headerStyle: {backgroundColor: AppColors.dark},
               headerTintColor: 'white',
@@ -62,10 +63,17 @@ export default function AppNavigator() {
                       gap: 10,
                       marginLeft: 0,
                     }}>
-                    <Image
-                      style={{width: 30, height: 30}}
-                      source={require('../images/user.png')}
-                    />
+                    {userAvatar === null ? (
+                      <Image
+                        style={{width: 30, height: 30}}
+                        source={require('../images/user.png')}
+                      />
+                    ) : (
+                      <Image
+                        style={{width: 30, height: 30, borderRadius: 20}}
+                        source={{uri: userAvatar}}
+                      />
+                    )}
                     <Text style={{fontSize: 17}}>{userName}</Text>
                   </View>
                 );
@@ -76,6 +84,15 @@ export default function AppNavigator() {
                 padding: 20,
               },
             };
+          }}
+        />
+        <Stack.Screen
+          name="uploadimage"
+          component={UploadImage}
+          options={{
+            headerStyle: {backgroundColor: AppColors.dark},
+            headerTintColor: 'white',
+            title: 'Change Image',
           }}
         />
       </Stack.Navigator>
